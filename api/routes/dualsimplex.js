@@ -14,9 +14,10 @@ router.post('/', (req, res, next) => {
         restrictions: req.body.restrictions,
         varRestrictions: req.body.var_restriction
     }
+   
     res.status(201).json({
         message: 'Sucesso',
-        dual: toDual(primal)
+        dual:toDual(primal)
     })
 });
 

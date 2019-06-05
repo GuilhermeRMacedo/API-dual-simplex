@@ -72,7 +72,7 @@ function fromMin(primal){
 
 function fromMax(primal){
     let dualVariables = Array()  
-    let dualRestricitons = Array()
+    let dualRestrictions = Array()
     let dualVarRestrictions = Array()
     
     
@@ -108,11 +108,46 @@ function fromMax(primal){
         })
       
     })
+
+    primal.variables.forEach(element => {
+        let varPresence = Array()
+
+        primal.restrictions.forEach(restriction => {
+        
+            restriction.restriction_var.forEach(variable => {
+ 
+                if(variable.var_id == element.id){
+                    varPresence.push({
+                        var_id: restriction.id,
+                        val: variable.val
+                    })
+                }
+            })
+        })
+
+        var restrictionEquality 
+        primal.varRestrictions.forEach(varRestriction =>{
+          
+            if(varRestriction.var_id == element.id){
+                
+                restrictionEquality = varRestriction.equality
+            }
+        })
+        
+        dualRestrictions.push({
+            id: element.id,
+            restriction_var: varPresence,
+            equality: restrictionEquality,
+            val: element.val
+        })
+
+    })
   
     
     return {
         type: types.MIN,
         variables: dualVariables,
+        restrictions: dualRestrictions,
         varRestrictions: dualVarRestrictions
 
     }

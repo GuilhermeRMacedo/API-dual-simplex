@@ -11,12 +11,17 @@
             val: element.val
         })
                 
-
-        dualVarRestrictions.push({
-            var_id: element.id,
-            equality: reverseEquality(element.equality)
-        })
-      
+        if(primal.type === types.MAX) {
+            dualVarRestrictions.push({
+                var_id: element.id,
+                equality: reverseEquality(element.equality)
+            })
+        }else{
+            dualVarRestrictions.push({
+                var_id: element.id,
+                equality: element.equality
+            })
+        }
     })
 
     primal.variables.forEach(element => {
@@ -39,8 +44,11 @@
         primal.varRestrictions.forEach(varRestriction =>{
           
             if(varRestriction.var_id == element.id){
-                
-                restrictionEquality = varRestriction.equality
+                if(primal.type === types.MAX){
+                    restrictionEquality = varRestriction.equality
+                }else{
+                    restrictionEquality = reverseEquality(varRestriction.equality)
+                }
             }
         })
         
